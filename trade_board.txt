@@ -10,6 +10,7 @@ CREATE TABLE trade_board
     view_count     INT         NOT NULL DEFAULT 0 COMMENT '게시물 조회 수',
     writer_email   VARCHAR(50) NOT NULL COMMENT '작성자 이메일',
     trade_location TEXT NULL COMMENT '거래 장소',
+   price	 VARCHQR(50) NULL COMMENT '가격',
     PRIMARY KEY (board_number)
 ) COMMENT '게시물 테이블';
 
@@ -80,6 +81,7 @@ SELECT
     B.write_datetime AS write_datetime,
     B.writer_email AS writer_email,
     B.trade_location AS trade_location,
+   B.price AS price,
     U.nickname AS writer_nickname,
     U.profile_image AS writer_profile_image
 FROM trade_board AS B
