@@ -1,0 +1,20 @@
+CREATE TABLE trade_chat_room (
+    chat_room_number INT AUTO_INCREMENT PRIMARY KEY Comment '채팅방 번호',
+    board_number INT NOT NULL Comment '게시물 번호',
+    buyer_email VARCHAR(50) NOT NULL Comment '구매자 이메일',
+    seller_email VARCHAR(50) NOT NULL Comment '판매자 이메일',
+    recent_message TEXT NULL Comment '가장 최근 메세지',
+    FOREIGN KEY (board_number) REFERENCES trade_board(board_number),
+    FOREIGN KEY (buyer_email) REFERENCES user(email),
+    FOREIGN KEY (seller_email) REFERENCES user(email)
+);
+
+CREATE TABLE trade_chat_message (
+    message_number INT AUTO_INCREMENT PRIMARY KEY Comment '메세지 번호',
+    chat_room_number INT NOT NULL Comment '채팅방 번호',
+    sender_email VARCHAR(50) NOT NULL Comment '송신자 이메일',
+    message TEXT NOT NULL Comment '메세지 내용',
+    write_datetime DATETIME    NOT NULL COMMENT '작성 날짜 및 시간',
+    FOREIGN KEY (chatroom_number) REFERENCES trade_chat_room(chatroom_number),
+    FOREIGN KEY (sender_email) REFERENCES user(email)
+);
