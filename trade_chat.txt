@@ -15,6 +15,6 @@ CREATE TABLE trade_chat_message (
     sender_email VARCHAR(50) NOT NULL Comment '송신자 이메일',
     message TEXT NOT NULL Comment '메세지 내용',
     write_datetime DATETIME    NOT NULL COMMENT '작성 날짜 및 시간',
-    FOREIGN KEY (chatroom_number) REFERENCES trade_chat_room(chatroom_number),
+    FOREIGN KEY (chat_room_number) REFERENCES trade_chat_room(chat_room_number),
     FOREIGN KEY (sender_email) REFERENCES user(email)
 );
