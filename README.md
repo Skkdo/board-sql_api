@@ -4,4 +4,6 @@
 
 [레시피 api](https://west-toothbrush-237.notion.site/API-fe6eee67c28f49bd977cdcca5f57f729)
 
+[공동 구매 api](https://west-toothbrush-237.notion.site/API-c3fedf969c1a470299fb116ab71be5f0?pvs=4)
+
 [변경 및 추가 사항](https://west-toothbrush-237.notion.site/5f3084bdc54748daa8412c38599de03d?pvs=4)
