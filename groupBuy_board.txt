@@ -1,5 +1,5 @@
--- 공동구매 게시판 테이블 생성
-CREATE TABLE groupBuy_board
+
+CREATE TABLE groupbuy_board
 (
     board_number         INT         NOT NULL AUTO_INCREMENT COMMENT '게시물 번호',
     title                TEXT        NOT NULL COMMENT '게시물 제목',
@@ -10,13 +10,16 @@ CREATE TABLE groupBuy_board
     view_count           INT         NOT NULL DEFAULT 0 COMMENT '게시물 조회 수',
     writer_email         VARCHAR(50) NOT NULL COMMENT '작성자 이메일',
     participation_area   TEXT        NULL COMMENT '참여 지역',
-    original_price       VARCHAR(50) NULL COMMENT '원래 가격',        -- 추가된 필드
-    groupbuy_price       VARCHAR(50) NULL COMMENT '공동구매 가격',    -- 추가된 필드
+    participation_deadline   DATETIME        NULL COMMENT '마감 날짜',
+    participation_count   INT        NULL COMMENT '현재 참여 인원',
+    participation_max   INT        NULL COMMENT '제한 인원',
+    original_price       VARCHAR(50) NULL COMMENT '원래 가격',       
+    groupbuy_price       VARCHAR(50) NULL COMMENT '공동구매 가격',   
     PRIMARY KEY (board_number)
 ) COMMENT '게시물 테이블';
 
--- 댓글 테이블 생성
-CREATE TABLE groupBuy_comment
+
+CREATE TABLE groupbuy_comment
 (
     comment_number INT         NOT NULL AUTO_INCREMENT COMMENT '댓글 번호',
     user_email     VARCHAR(50) NOT NULL COMMENT '사용자 이메일',
@@ -26,16 +29,16 @@ CREATE TABLE groupBuy_comment
     PRIMARY KEY (comment_number)
 ) COMMENT '댓글 테이블';
 
--- 좋아요 테이블 생성
-CREATE TABLE groupBuy_favorite
+
+CREATE TABLE groupbuy_favorite
 (
     user_email   VARCHAR(50) NOT NULL COMMENT '사용자 이메일',
     board_number INT         NOT NULL COMMENT '게시물 번호',
     PRIMARY KEY (user_email, board_number)
 ) COMMENT '좋아요 테이블';
 
--- 이미지 테이블 생성
-CREATE TABLE groupBuy_image
+
+CREATE TABLE groupbuy_image
 (   
     sequence INT NOT NULL AUTO_INCREMENT COMMENT '이미지 번호',
     board_number INT  NOT NULL   COMMENT '게시물 번호',
@@ -43,39 +46,39 @@ CREATE TABLE groupBuy_image
     PRIMARY KEY (sequence)
 ) COMMENT '게시글 이미지 테이블';
 
--- 외래 키 제약 조건 추가
-ALTER TABLE groupBuy_image
-    ADD CONSTRAINT FK_groupBuy_board_TO_groupBuy_image
-        FOREIGN KEY (board_number)
-            REFERENCES groupBuy_board (board_number);
 
-ALTER TABLE groupBuy_board
-    ADD CONSTRAINT FK_user_TO_groupBuy_board
+ALTER TABLE groupbuy_image
+    ADD CONSTRAINT FK_groupbuy_board_TO_groupbuy_image
+        FOREIGN KEY (board_number)
+            REFERENCES groupbuy_board (board_number);
+
+ALTER TABLE groupbuy_board
+    ADD CONSTRAINT FK_user_TO_groupbuy_board
         FOREIGN KEY (writer_email)
             REFERENCES user (email);
 
-ALTER TABLE groupBuy_favorite
-    ADD CONSTRAINT FK_user_TO_groupBuy_favorite
+ALTER TABLE groupbuy_favorite
+    ADD CONSTRAINT FK_user_TO_groupbuy_favorite
         FOREIGN KEY (user_email)
             REFERENCES user (email);
 
-ALTER TABLE groupBuy_favorite
-    ADD CONSTRAINT FK_groupBuy_board_TO_groupBuy_favorite
+ALTER TABLE groupbuy_favorite
+    ADD CONSTRAINT FK_groupbuy_board_TO_groupbuy_favorite
         FOREIGN KEY (board_number)
-            REFERENCES groupBuy_board (board_number);
+            REFERENCES groupbuy_board (board_number);
 
-ALTER TABLE groupBuy_comment
-    ADD CONSTRAINT FK_user_TO_groupBuy_comment
+ALTER TABLE groupbuy_comment
+    ADD CONSTRAINT FK_user_TO_groupbuy_comment
         FOREIGN KEY (user_email)
             REFERENCES user (email);
 
-ALTER TABLE groupBuy_comment
-    ADD CONSTRAINT FK_groupBuy_board_TO_groupBuy_comment
+ALTER TABLE groupbuy_comment
+    ADD CONSTRAINT FK_groupbuy_board_TO_groupbuy_comment
         FOREIGN KEY (board_number)
-            REFERENCES groupBuy_board (board_number);
+            REFERENCES groupbuy_board (board_number);
 
--- 공동구매 게시판 목록 뷰 생성
-CREATE VIEW groupBuy_board_list_view AS
+
+CREATE VIEW groupbuy_board_list_view AS
 SELECT
     B.board_number AS board_number,
     B.title AS title,
@@ -87,12 +90,15 @@ SELECT
     B.write_datetime AS write_datetime,
     B.writer_email AS writer_email,
     B.participation_area AS participation_area,
-    B.original_price AS original_price,   -- 추가된 필드
-    B.groupbuy_price AS groupbuy_price,   -- 추가된 필드
+    B.participation_deadline AS participation_deadline,
+    B.participation_count AS participation_count,
+    B.participation_max AS participation_max,
+    B.original_price AS original_price,  
+    B.groupbuy_price AS groupbuy_price,  
     U.nickname AS writer_nickname,
     U.profile_image AS writer_profile_image
-FROM groupBuy_board AS B
+FROM groupbuy_board AS B
          INNER JOIN `user` AS U
                     ON B.writer_email = U.email
-         LEFT JOIN (SELECT board_number, ANY_VALUE(image) AS image FROM groupBuy_image GROUP BY board_number) AS I
+         LEFT JOIN (SELECT board_number, ANY_VALUE(image) AS image FROM groupbuy_image GROUP BY board_number) AS I
                    ON B.board_number = I.board_number;
