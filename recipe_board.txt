@@ -10,6 +10,15 @@ CREATE TABLE recipe_board
   view_count     INT         NOT NULL DEFAULT 0 COMMENT '게시물 조회 수',
   writer_email   VARCHAR(50) NOT NULL COMMENT '작성자 이메일',
   type              INT NOT NULL COMMENT '종류',
+cooking_time   int           not null comment '요리 시간',
+    step_1         text          null comment '순서1',
+    step_2         text          null comment '순서2',
+    step_3         text          null comment '순서3',
+    step_4         text          null comment '순서4',
+    step_5         text          null comment '순서5',
+    step_6         text          null comment '순서6',
+    step_7         text          null comment '순서7',
+    step_8         text          null comment '순서8',
   PRIMARY KEY (board_number)
 ) COMMENT '게시물 테이블';
 
@@ -36,7 +45,8 @@ CREATE TABLE recipe_favorite
 CREATE TABLE recipe_image
 (
   board_number INT  NOT NULL COMMENT '게시물 번호',
-  image        TEXT NOT NULL COMMENT '게시물 이미지 URL'
+  image        TEXT NOT NULL COMMENT '게시물 이미지 URL',
+  step         INT NOT NULL COMMENT '순서'
 ) COMMENT '게시물 이미지 테이블';
 
 
