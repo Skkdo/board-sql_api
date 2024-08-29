@@ -93,6 +93,7 @@ SELECT
     RB.write_datetime AS write_datetime,
     RB.writer_email AS writer_email,
     RB.type AS type,
+    RB.cooking_type AS cookingType,
     U.nickname AS writer_nickname,
     U.profile_image AS writer_profile_image
 FROM recipe_board AS RB
