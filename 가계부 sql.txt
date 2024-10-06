@@ -1,0 +1,38 @@
+
+CREATE TABLE account_log
+(
+    account_log_number	      INT                NOT NULL AUTO_INCREMENT COMMENT '가계부 번호',
+    user_email    VARCHAR(50) NOT NULL COMMENT '사용자 이메일',
+    content        TEXT             NOT NULL COMMENT '내용',
+    type             int                NOT NULL COMMENT '수입 지출',
+    money_custom_type_number  int    COMMENT '커스텀 입출금 타입 번호 ',
+    money          int               NOT NULL COMMENT '금액',
+    datetime       DATETIME     NOT NULL COMMENT '날짜 및 시간',
+        PRIMARY KEY (account_log_number)
+) COMMENT '가계부 테이블';
+
+CREATE TABLE money_custom_type
+(
+   custom_type_number           INT                NOT NULL AUTO_INCREMENT COMMENT '입출금 타입 번호',
+   user_email  VARCHAR(50) NOT NULL COMMENT '사용자 이메일',
+   custom_type_name VARCHAR(50) NOT NULL COMMENT '입출금 타입 이름',
+	PRIMARY KEY (custom_type_number)
+)COMMENT '커스텀 입출금 타입 테이블';
+
+ALTER TABLE account_log
+   ADD CONSTRAINT FK_user_TO_account_log
+	FOREIGN KEY (user_email)
+		REFERENCES user (email);
+
+ALTER TABLE account_log
+   ADD CONSTRAINT FK_money_custom_type_TO_account_log
+   FOREIGN KEY (money_custom_type_number)
+   REFERENCES money_custom_type (custom_type_number)
+   ON DELETE SET NULL;
+
+
+
+ALTER TABLE money_custom_type
+   ADD CONSTRAINT FK_user_TO_money_custom_type
+	FOREIGN KEY (user_email)
+		REFERENCES user (email);

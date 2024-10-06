@@ -95,8 +95,16 @@ SELECT
     RB.type AS type,
     RB.cooking_type AS cookingType,
     U.nickname AS writer_nickname,
-    U.profile_image AS writer_profile_image
-FROM recipe_board AS RB
+    U.profile_image AS writer_profile_image,
+    RB.step_1 AS step_1,
+    RB.step_1 AS step_2,
+    RB.step_1 AS step_3,
+    RB.step_1 AS step_4,
+    RB.step_1 AS step_5,
+    RB.step_1 AS step_6,
+    RB.step_1 AS step_7,
+    RB.step_1 AS step_8
+   FROM recipe_board AS RB
 INNER JOIN `user` AS U
 ON RB.writer_email = U.email
 LEFT JOIN (SELECT board_number, ANY_VALUE(image) AS image FROM recipe_image GROUP BY board_number) AS RI
